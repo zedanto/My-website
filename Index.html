@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Clicker 💰</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #071b12, #14532d);
+      color: white;
+      padding: 30px 15px;
+    }
+
+    .game {
+      max-width: 400px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 20px;
+      background: #163c2b;
+      box-shadow: 0 8px 25px #0005;
+    }
+
+    h1 { color: #4ade80; }
+
+    .money {
+      font-size: 38px;
+      font-weight: bold;
+      color: #86efac;
+      margin: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #22c55e;
+      color: #052e16;
+    }
+
+    button:hover { background: #86efac; }
+    .gold { background: #facc15; }
+    .info { color: #d1fae5; }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h1>💰 Money Clicker</h1>
+    <p class="info">Click, earn, and become a virtual millionaire!</p>
+
+    <div class="money">$<span id="money">0</span></div>
+
+    <p>Per click: $<span id="power">1</span></p>
+    <p>Automatic income: $<span id="income">0</span>/second</p>
+
+    <button onclick="earnMoney()">💵 MAKE MONEY</button>
+
+    <button class="gold" onclick="buyClick()">
+      ⚡ Upgrade Click ($<span id="clickCost">25</span>)
+    </button>
+
+    <button onclick="buyBusiness()">
+      🏭 Buy Business ($<span id="businessCost">100</span>)
+    </button>
+
+    <p>Businesses owned: <span id="businesses">0</span></p>
+    <p id="message">Start earning your first dollars!</p>
+  </div>
+
+  <script>
+    let money = 0;
+    let power = 1;
+    let income = 0;
+    let clickCost = 25;
+    let businessCost = 100;
+    let businesses = 0;
+
+    function update() {
+      document.getElementById("money").textContent =
+        Math.floor(money).toLocaleString();
+
+      document.getElementById("power").textContent = power;
+      document.getElementById("income").textContent = income;
+      document.getElementById("clickCost").textContent = clickCost;
+      document.getElementById("businessCost").textContent = businessCost;
+      document.getElementById("businesses").textContent = businesses;
+    }
+
+    function earnMoney() {
+      money += power;
+      update();
+    }
+
+    function buyClick() {
+      if (money >= clickCost) {
+        money -= clickCost;
+        power += 1;
+        clickCost = Math.floor(clickCost * 1.6);
+        document.getElementById("message").textContent =
+          "Your clicks are now more powerful! ⚡";
+        update();
+      } else {
+        document.getElementById("message").textContent =
+          "Not enough money! Keep clicking.";
+      }
+    }
+
+    function buyBusiness() {
+      if (money >= businessCost) {
+        money -= businessCost;
+        businesses++;
+        income += 5;
+        businessCost = Math.floor(businessCost * 1.8);
+        document.getElementById("message").textContent =
+          "Your business earns $5 every second! 🏭";
+        update();
+      } else {
+        document.getElementById("message").textContent =
+          "Save more money to buy a business!";
+      }
+    }
+
+    setInterval(() => {
+      money += income;
+      update();
+    }, 1000);
+
+    update();
+  </script>
+</body>
+</html>
